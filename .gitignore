@@ -28,3 +28,11 @@ dist-ssr
 .env.*
 server/.env
 client/.env
+server/node_modules
+client/node_modules
+server/dist
+client/dist
+server/dist-ssr
+client/dist-ssr
+server/.vscode
+client/.vscode
