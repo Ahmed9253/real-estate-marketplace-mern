@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import userRouter from "./routes/user.route.js";
 dotenv.config();
 
 // ========== Initialize Express app ==========
@@ -15,6 +16,8 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
+
+app.use("/api/user", userRouter);
 
 // ========== Connect to MongoDB and start the server ==========
 const PORT = process.env.PORT || 5000;
