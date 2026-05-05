@@ -8,10 +8,6 @@ dotenv.config();
 // ========== Initialize Express app ==========
 const app = express();
 
-// ========== Middleware ==========
-app.use(cors());
-app.use(express.json());
-
 // ========== Routes ==========
 app.get("/", (req, res) => {
   res.send("Hello World!");
@@ -33,3 +29,12 @@ mongoose
     console.error("Error connecting to MongoDB:", err);
     process.exit(1);
   });
+
+// ========== Middleware ==========
+app.use(cors());
+app.use(express.json());
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500; //for internal server error.
+  const message = err.message || "internal server error.";
+  res.status(statusCode).json({ succces: false, statusCode, message });
+});
