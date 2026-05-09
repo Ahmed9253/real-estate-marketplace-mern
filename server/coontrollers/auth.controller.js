@@ -94,3 +94,98 @@ export const signin = async (req, res, next) => {
     next(error);
   }
 };
+
+export const signout = async (req, res, next) => {
+  try {
+    res.clearCookie("access_token");
+    res.status(200).json({
+      success: true,
+      message: "User signed out successfully!",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    if (!user) {
+      return next(errorHandler(404, "User not found"));
+    }
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateUser = async (req, res, next) => {
+  const { username, email, password } = req.body;
+
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return next(errorHandler(404, "User not found"));
+    }
+
+    // Check if new username is taken by another user
+    if (username && username !== user.username) {
+      const existingUsername = await User.findOne({ username });
+      if (existingUsername) {
+        return next(errorHandler(409, "Username is already taken."));
+      }
+    }
+
+    // Check if new email is taken by another user
+    if (email && email !== user.email) {
+      const existingEmail = await User.findOne({ email });
+      if (existingEmail) {
+        return next(errorHandler(409, "Email is already taken."));
+      }
+    }
+
+    // Update fields
+    if (username) user.username = username;
+    if (email) user.email = email;
+    if (password) {
+      const hashedPassword = await bcryptjs.hash(password, 10);
+      user.password = hashedPassword;
+    }
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "User updated successfully!",
+      user: {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return next(errorHandler(404, "User not found"));
+    }
+
+    await User.findByIdAndDelete(req.user.id);
+
+    res.clearCookie("access_token");
+    res.status(200).json({
+      success: true,
+      message: "User deleted successfully!",
+    });
+  } catch (error) {
+    next(error);
+  }
+};

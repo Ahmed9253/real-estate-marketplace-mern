@@ -4,7 +4,7 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Profile from "./pages/Profile";
 import About from "./pages/About";
-import Navbar from "./component/Navbar";
+import Navbar from "./components/Navbar";
 import { Toaster } from "react-hot-toast";
 
 const App = () => {
