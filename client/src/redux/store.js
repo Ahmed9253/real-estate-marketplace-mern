@@ -2,7 +2,7 @@ import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import userReducer from "./user/userSlice";
 import { persistStore, persistReducer } from "redux-persist";
 
-/* ✅ SAFE storage for Vite */
+/* storage for Vite */
 const storage = {
   getItem: (key) => Promise.resolve(localStorage.getItem(key)),
   setItem: (key, value) => Promise.resolve(localStorage.setItem(key, value)),
