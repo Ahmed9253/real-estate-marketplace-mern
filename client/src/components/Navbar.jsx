@@ -96,7 +96,7 @@ const Navbar = () => {
 
               {/* DROPDOWN */}
               {dropdownOpen && (
-                <div className="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-lg overflow-hidden z-[9999]">
+                <div className="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-lg overflow-hidden z-9999">
                   <Link
                     to="/profile"
                     onClick={() => setDropdownOpen(false)}
